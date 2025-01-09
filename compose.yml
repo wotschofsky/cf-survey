@@ -1,0 +1,15 @@
+services:
+  web:
+    build: .
+    restart: always
+    depends_on:
+      - clickhouse
+    environment:
+      - CLICKHOUSE_URL=http://clickhouse:8123
+
+  clickhouse:
+    image: clickhouse/clickhouse-server:latest
+    restart: always
+    volumes:
+      - ./db:/var/lib/clickhouse
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
